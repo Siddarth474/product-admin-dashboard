@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const [login, setLogin] = useState({
     username: "",
-    password: ""
+    password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -40,11 +40,11 @@ export default function LoginPage() {
       const data = await authService.login(login);
 
       localStorage.setItem("accessToken", data.accessToken);
+      document.cookie = `accessToken=${data.accessToken}; path=/; max-age=86400; SameSite=Lax`;
 
       router.replace("/product");
     } catch (error) {
       const axiosError = error as AxiosError<ApiErrorResponse>;
-
       const message =
         axiosError.response?.data?.message || "Invalid username or password.";
 
@@ -57,9 +57,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
       <div className="w-full max-w-md">
-        {/* Brand */}
         <div className="mb-8 text-center">
-
           <h1 className="text-3xl font-semibold tracking-tight">
             Welcome back
           </h1>
@@ -69,10 +67,8 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username */}
             <div>
               <label
                 htmlFor="username"
@@ -85,7 +81,9 @@ export default function LoginPage() {
                 id="username"
                 type="text"
                 value={login.username}
-                onChange={(event) => setLogin({ ...login, username: event.target.value })}
+                onChange={(event) =>
+                  setLogin({ ...login, username: event.target.value })
+                }
                 placeholder="Enter your username"
                 autoComplete="username"
                 disabled={isLoading}
@@ -93,7 +91,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -107,7 +104,9 @@ export default function LoginPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={login.password}
-                  onChange={(event) => setLogin({ ...login, password: event.target.value })}
+                  onChange={(event) =>
+                    setLogin({ ...login, password: event.target.value })
+                  }
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   disabled={isLoading}
@@ -130,7 +129,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Error */}
             {error && (
               <div
                 role="alert"
@@ -140,7 +138,6 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={isLoading}
@@ -158,7 +155,6 @@ export default function LoginPage() {
           </form>
         </div>
 
-        {/* Demo credentials */}
         <div className="mt-5 text-center text-xs text-zinc-500">
           <p>Demo credentials</p>
 

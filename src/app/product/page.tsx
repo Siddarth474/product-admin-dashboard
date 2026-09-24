@@ -8,6 +8,7 @@ import { productService, Product } from "@/services/product.service";
 import ProductTable from "./components/ProductTable";
 import ProductMobileCard from "./components/ProductMobileCard";
 import ProductListSkeleton from "./components/ProductListSkeleton"; 
+import LogoutButton from "./components/LogoutButton";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -43,7 +44,6 @@ export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-zinc-50">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* Header */}
         <header className="mb-6">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -60,15 +60,18 @@ export default function ProductsPage() {
               </p>
             </div>
 
-            {!isLoading && !error && (
-              <div className="text-sm text-zinc-500">
-                {products.length} products
-              </div>
-            )}
+            <div className="flex items-center gap-3">
+              {!isLoading && !error && (
+                <div className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600">
+                  {products.length} products
+                </div>
+              )}
+
+              <LogoutButton />
+            </div>
           </div>
         </header>
 
-        {/* Content */}
         {isLoading && <ProductListSkeleton />}
 
         {!isLoading && error && (
@@ -110,17 +113,15 @@ export default function ProductsPage() {
 
         {!isLoading && !error && products.length > 0 && (
           <>
-            {/* Desktop */}
             <ProductTable products={products} />
 
-            {/* Mobile */}
             <div className="space-y-3 md:hidden">
               {products.map((product) => (
                 <ProductMobileCard
                   key={product.id}
                   product={product}
                 />
-              ))}
+              ))}   
             </div>
           </>
         )}

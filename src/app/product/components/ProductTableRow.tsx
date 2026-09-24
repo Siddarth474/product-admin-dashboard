@@ -1,67 +1,10 @@
 import Image from "next/image";
 import { Product } from "@/services/product.service";
+import Link from "next/link";
+import { formatPriceInINR } from "@/utils/currencyConvertor";
 
 interface ProductTableRowProps {
   product: Product;
-}
-
-export default function ProductTableRow({ product }: ProductTableRowProps) {
-  return (
-    <tr className="group transition-colors hover:bg-zinc-50">
-      {/* Product */}
-      <td className="px-6 py-4">
-        <div className="flex items-center gap-4">
-          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100">
-            <Image
-              src={product.thumbnail}
-              alt={product.title}
-              fill
-              sizes="48px"
-              className="object-cover"
-            />
-          </div>
-
-          <div className="min-w-0">
-            <p className="truncate font-medium text-zinc-900">
-              {product.title}
-            </p>
-
-            <p className="mt-1 text-xs text-zinc-500">ID #{product.id}</p>
-          </div>
-        </div>
-      </td>
-
-      {/* Category */}
-      <td className="px-6 py-4">
-        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium capitalize text-zinc-700">
-          {product.category}
-        </span>
-      </td>
-
-      {/* Price */}
-      <td className="px-6 py-4">
-        <span className="font-medium text-zinc-900">
-          ${product.price.toFixed(2)}
-        </span>
-      </td>
-
-      {/* Rating */}
-      <td className="px-6 py-4">
-        <div className="flex items-center gap-1.5">
-          <span className="text-yellow-500">★</span>
-
-          <span className="text-sm font-medium text-zinc-700">
-            {product.rating.toFixed(1)}
-          </span>
-        </div>
-      </td>
-
-      {/* Stock */}
-      <td className="px-6 py-4">
-        <StockBadge stock={product.stock} />
-      </td>
-    </tr>
-  );
 }
 
 function StockBadge({ stock }: { stock: number }) {
@@ -88,5 +31,58 @@ function StockBadge({ stock }: { stock: number }) {
     <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-600">
       {stock} in stock
     </span>
+  );
+}
+
+export default function ProductTableRow({ product }: ProductTableRowProps) {
+  return (
+    <tr className="group transition-colors hover:bg-zinc-50">
+      <td className="px-6 py-4">
+        <div className="flex items-center gap-4">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100">
+            <Image
+              src={product.thumbnail}
+              alt={product.title}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
+          </div>
+
+          <Link
+            href={`/product/${product.id}`}
+            className="truncate font-medium text-zinc-900 transition hover:text-zinc-500"
+          >
+            {product.title}
+          </Link>
+        </div>
+      </td>
+
+      <td className="px-6 py-4">
+        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium capitalize text-zinc-700">
+          {product.category}
+        </span>
+      </td>
+
+      <td className="px-6 py-4">
+        <span className="font-medium text-zinc-900">
+          {formatPriceInINR(product.price)}
+        </span>
+      </td>
+
+      <td className="px-6 py-4">
+        <div className="flex items-center gap-1.5">
+          <span className="text-yellow-500">★</span>
+
+          <span className="text-sm font-medium text-zinc-700">
+            {product.rating.toFixed(1)}
+          </span>
+        </div>
+      </td>
+
+      <td className="px-6 py-4">
+        <StockBadge stock={product.stock} />
+      </td>
+    </tr>
   );
 }

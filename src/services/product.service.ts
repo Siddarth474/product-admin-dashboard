@@ -1,5 +1,13 @@
 import { api } from "@/lib/axios";
 
+export interface ProductReview {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+}
+
 export interface Product {
   id: number;
   title: string;
@@ -9,6 +17,8 @@ export interface Product {
   rating: number;
   stock: number;
   thumbnail: string;
+  images: string[];
+  reviews: ProductReview[];
 }
 
 export interface ProductsResponse {
@@ -28,6 +38,12 @@ export const productService = {
     const response = await api.get<ProductsResponse>("/products", {
       params,
     });
+
+    return response.data;
+  },
+
+  async getProductById(id: number): Promise<Product> {
+    const response = await api.get<Product>(`/products/${id}`);
 
     return response.data;
   },

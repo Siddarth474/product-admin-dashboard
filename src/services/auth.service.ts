@@ -23,4 +23,11 @@ export const authService = {
 
     return response.data;
   },
+
+  logout(): void {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("accessToken");
+      document.cookie = "accessToken=; path=/; max-age=0";
+    }
+  },
 };
