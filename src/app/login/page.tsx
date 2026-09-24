@@ -15,24 +15,26 @@ export default function LoginPage() {
   } = useLogin();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
+    <main className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12 text-zinc-900">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            Admin Dashboard
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950">
             Welcome back
           </h1>
-
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-zinc-600">
             Sign in to manage your products
           </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+        <div className="rounded-2xl border border-zinc-300 bg-white p-6 shadow-xl sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="username"
-                className="mb-2 block text-sm font-medium text-zinc-200"
+                className="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-700"
               >
                 Username
               </label>
@@ -47,14 +49,14 @@ export default function LoginPage() {
                 placeholder="Enter your username"
                 autoComplete="username"
                 disabled={isLoading}
-                className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 text-sm text-white outline-none placeholder:text-zinc-500 transition focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 w-full rounded-lg border border-zinc-300 bg-white px-3.5 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 transition focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:opacity-60"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-zinc-200"
+                className="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-700"
               >
                 Password
               </label>
@@ -70,7 +72,7 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   disabled={isLoading}
-                  className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 pl-3 pr-10 text-sm text-white outline-none placeholder:text-zinc-500 transition focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-11 w-full rounded-lg border border-zinc-300 bg-white pl-3.5 pr-10 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 transition focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:opacity-60"
                 />
 
                 <button
@@ -78,7 +80,7 @@ export default function LoginPage() {
                   onClick={() => setShowPassword((prev) => !prev)}
                   disabled={isLoading}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-0 top-0 flex h-full items-center justify-center px-3 text-zinc-400 hover:text-zinc-200 focus:outline-none focus-visible:text-white transition disabled:cursor-not-allowed disabled:opacity-60"
+                  className="absolute right-0 top-0 flex h-full items-center justify-center px-3 text-zinc-400 hover:text-zinc-600 focus:outline-none transition disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" aria-hidden="true" />
@@ -92,7 +94,7 @@ export default function LoginPage() {
             {error && (
               <div
                 role="alert"
-                className="rounded-lg border border-red-900/60 bg-red-950/30 px-3 py-2.5 text-sm text-red-400"
+                className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600"
               >
                 {error}
               </div>
@@ -101,11 +103,11 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex h-11 w-full items-center justify-center rounded-lg bg-white px-4 text-sm font-semibold text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-11 w-full items-center justify-center rounded-lg bg-black px-4 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 shadow-2xs"
             >
               {isLoading ? (
                 <>
-                  <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-black" />
+                  <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-white" />
                   Signing in...
                 </>
               ) : (
@@ -115,13 +117,13 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <div className="mt-5 text-center text-xs text-zinc-500">
-          <p>Demo credentials</p>
+        <div className="mt-6 rounded-xl border border-zinc-200 bg-white/70 p-4 text-center text-xs text-zinc-500 shadow-2xs">
+          <p className="font-medium text-zinc-600">Demo credentials</p>
 
-          <p className="mt-1">
-            <span className="text-zinc-400">emilys</span>
-            {" / "}
-            <span className="text-zinc-400">emilyspass</span>
+          <p className="mt-1 font-mono text-zinc-700">
+            <span>emilys</span>
+            <span className="text-zinc-400 mx-1.5">/</span>
+            <span>emilyspass</span>
           </p>
         </div>
       </div>
