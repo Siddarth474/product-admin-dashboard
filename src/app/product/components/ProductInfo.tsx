@@ -54,7 +54,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </span>
       </div>
 
-      <div className="mt-8 border-t border-zinc-200 pt-6">
+      <div className="mt-8 border-t border-zinc-300 pt-6">
         <h2 className="text-sm font-semibold text-zinc-950">Description</h2>
 
         <p className="mt-3 text-sm leading-7 text-zinc-600">
@@ -62,7 +62,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </p>
       </div>
       
-      <div className="mt-6 flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4">
+      <div className="mt-6 flex items-center justify-between rounded-xl border border-zinc-300 bg-white p-4 shadow-xs">
         <div>
           <p className="text-sm font-medium text-zinc-900">Availability</p>
 

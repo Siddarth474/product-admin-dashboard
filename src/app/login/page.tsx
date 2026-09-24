@@ -1,58 +1,18 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import { AxiosError } from "axios";
 import { Eye, EyeOff } from "lucide-react";
-import { authService } from "@/services/auth.service";
-
-interface ApiErrorResponse {
-  message?: string;
-}
+import { useLogin } from "@/hooks/useLogin";
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  const [login, setLogin] = useState({
-    username: "",
-    password: "",
-  });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (isLoading) return;
-
-    setError("");
-
-    if (!login.username.trim() || !login.password.trim()) {
-      setError("Username and password are required.");
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const data = await authService.login(login);
-
-      localStorage.setItem("accessToken", data.accessToken);
-      document.cookie = `accessToken=${data.accessToken}; path=/; max-age=86400; SameSite=Lax`;
-
-      router.replace("/product");
-    } catch (error) {
-      const axiosError = error as AxiosError<ApiErrorResponse>;
-      const message =
-        axiosError.response?.data?.message || "Invalid username or password.";
-
-      setError(message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    login,
+    setLogin,
+    showPassword,
+    setShowPassword,
+    isLoading,
+    error,
+    handleSubmit,
+  } = useLogin();
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">

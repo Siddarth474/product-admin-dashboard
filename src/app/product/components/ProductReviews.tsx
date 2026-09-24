@@ -14,7 +14,7 @@ function formatReviewDate(date: string) {
 
 export default function ProductReviews({ reviews }: ProductReviewsProps) {
   return (
-    <section className="mt-12 border-t border-zinc-200 pt-10">
+    <section className="mt-12 border-t border-zinc-300 pt-10">
       <div className="flex items-end justify-between gap-4">
         <div>
           <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
@@ -30,7 +30,7 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
       </div>
 
       {reviews.length === 0 ? (
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-8 text-center">
+        <div className="mt-6 rounded-xl border border-zinc-300 bg-white p-8 text-center shadow-xs">
           <p className="text-sm text-zinc-500">
             No reviews available for this product.
           </p>
@@ -40,7 +40,7 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
           {reviews.map((review, index) => (
             <article
               key={`${review.reviewerEmail}-${index}`}
-              className="rounded-xl border border-zinc-200 bg-white p-5"
+              className="rounded-xl border border-zinc-300 bg-white p-5 shadow-xs"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>

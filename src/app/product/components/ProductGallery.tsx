@@ -21,7 +21,7 @@ export default function ProductGallery({
   return (
     <div className="flex flex-col gap-4">
       {/* Main image */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl border border-zinc-200 bg-white">
+      <div className="relative aspect-square overflow-hidden rounded-2xl border border-zinc-300 bg-white shadow-xs">
         <Image
           src={selectedImage}
           alt={title}
@@ -45,7 +45,7 @@ export default function ProductGallery({
               className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-white transition ${
                 isSelected
                   ? "border-black ring-1 ring-black"
-                  : "border-zinc-200 hover:border-zinc-400"
+                  : "border-zinc-300 hover:border-zinc-500"
               }`}
               aria-label={`View image ${index + 1}`}
             >

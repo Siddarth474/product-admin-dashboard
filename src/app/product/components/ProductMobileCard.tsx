@@ -29,9 +29,9 @@ function StockBadge({ stock }: { stock: number }) {
 
 export default function ProductMobileCard({ product }: ProductMobileCardProps) {
   return (
-    <article className="rounded-xl border border-zinc-200 bg-white p-4">
+    <article className="rounded-xl border border-zinc-300 bg-white p-4 shadow-xs">
       <div className="flex gap-4">
-        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-zinc-100">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-zinc-300 bg-zinc-100">
           <Image
             src={product.thumbnail}
             alt={product.title}

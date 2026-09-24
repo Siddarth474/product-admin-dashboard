@@ -37,18 +37,18 @@ export default function ProductPagination({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="mt-4 flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="text-sm text-zinc-500">
+    <div className="mt-4 flex flex-col gap-4 rounded-xl border border-zinc-300 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="text-sm text-zinc-600">
         Showing{" "}
-        <span className="font-medium text-zinc-900">
+        <span className="font-semibold text-zinc-900">
           {startItem}–{endItem}
         </span>{" "}
-        of <span className="font-medium text-zinc-900">{totalProducts}</span>
+        of <span className="font-semibold text-zinc-900">{totalProducts}</span>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <label htmlFor="page-size" className="text-sm text-zinc-500">
+          <label htmlFor="page-size" className="text-sm font-medium text-zinc-600">
             Rows
           </label>
 
@@ -56,7 +56,7 @@ export default function ProductPagination({
             id="page-size"
             value={pageSize}
             onChange={(event) => onPageSizeChange(Number(event.target.value))}
-            className="h-9 rounded-lg border border-zinc-200 bg-white px-2 text-sm text-zinc-700 outline-none transition focus:border-zinc-400"
+            className="h-9 rounded-lg border border-zinc-300 bg-white px-2.5 text-sm font-medium text-zinc-800 outline-none transition focus:border-zinc-500"
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -64,12 +64,12 @@ export default function ProductPagination({
           </select>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="h-9 rounded-lg border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="h-9 rounded-lg border border-zinc-300 px-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-400 hover:bg-zinc-100/70 disabled:cursor-not-allowed disabled:border-zinc-200 disabled:opacity-40"
           >
             Previous
           </button>
@@ -85,7 +85,7 @@ export default function ProductPagination({
                 className={`hidden h-9 min-w-9 rounded-lg px-2 text-sm font-medium transition sm:block ${
                   isActive
                     ? "bg-black text-white"
-                    : "text-zinc-600 hover:bg-zinc-100"
+                    : "border border-zinc-200 text-zinc-700 hover:border-zinc-300 hover:bg-zinc-100"
                 }`}
               >
                 {page}
@@ -97,7 +97,7 @@ export default function ProductPagination({
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="h-9 rounded-lg border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="h-9 rounded-lg border border-zinc-300 px-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-400 hover:bg-zinc-100/70 disabled:cursor-not-allowed disabled:border-zinc-200 disabled:opacity-40"
           >
             Next
           </button>

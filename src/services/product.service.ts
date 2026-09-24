@@ -31,6 +31,14 @@ export interface ProductsResponse {
 export interface GetProductsParams {
   limit?: number;
   skip?: number;
+  sortBy?: "price" | "rating" | "title";
+  order?: "asc" | "desc";
+}
+
+export interface Category {
+  slug: string;
+  name: string;
+  url: string;
 }
 
 export const productService = {
@@ -38,6 +46,40 @@ export const productService = {
     const response = await api.get<ProductsResponse>("/products", {
       params,
     });
+
+    return response.data;
+  },
+
+  async getProductsByCategory(
+    category: string,
+    params?: GetProductsParams,
+  ): Promise<ProductsResponse> {
+    const response = await api.get<ProductsResponse>(
+      `/products/category/${category}`,
+      {
+        params,
+      },
+    );
+
+    return response.data;
+  },
+
+  async searchProducts(
+    query: string,
+    params?: GetProductsParams,
+  ): Promise<ProductsResponse> {
+    const response = await api.get<ProductsResponse>("/products/search", {
+      params: {
+        q: query,
+        ...params,
+      },
+    });
+
+    return response.data;
+  },
+
+  async getCategories(): Promise<Category[]> {
+    const response = await api.get<Category[]>("/products/categories");
 
     return response.data;
   },

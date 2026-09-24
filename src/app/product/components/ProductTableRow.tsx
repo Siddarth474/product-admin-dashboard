@@ -36,10 +36,10 @@ function StockBadge({ stock }: { stock: number }) {
 
 export default function ProductTableRow({ product }: ProductTableRowProps) {
   return (
-    <tr className="group transition-colors hover:bg-zinc-50">
+    <tr className="group transition-colors hover:bg-zinc-100/60">
       <td className="px-6 py-4">
         <div className="flex items-center gap-4">
-          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-300 bg-zinc-100">
             <Image
               src={product.thumbnail}
               alt={product.title}
@@ -59,7 +59,7 @@ export default function ProductTableRow({ product }: ProductTableRowProps) {
       </td>
 
       <td className="px-6 py-4">
-        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium capitalize text-zinc-700">
+        <span className="rounded-full border border-zinc-300 bg-zinc-100 px-3 py-1 text-xs font-medium capitalize text-zinc-700">
           {product.category}
         </span>
       </td>

@@ -24,7 +24,7 @@ export default function LogoutButton({ className }: LogoutButtonProps) {
       title="Logout"
       className={
         className ||
-        "inline-flex h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-xs transition hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-950 focus:outline-hidden focus:ring-2 focus:ring-zinc-400 sm:px-3.5"
+        "inline-flex h-9 items-center gap-2 rounded-lg border border-zinc-300 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-xs transition hover:border-zinc-400 hover:bg-zinc-100 hover:text-zinc-950 focus:outline-hidden focus:ring-2 focus:ring-zinc-400 sm:px-3.5"
       }
     >
       <LogOut className="h-3.5 w-3.5 text-zinc-500" />

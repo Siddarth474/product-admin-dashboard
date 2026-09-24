@@ -2,8 +2,8 @@ export default function ProductListSkeleton() {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden overflow-hidden rounded-xl border border-zinc-200 bg-white md:block">
-        <div className="divide-y divide-zinc-100">
+      <div className="hidden overflow-hidden rounded-xl border border-zinc-300 bg-white shadow-xs md:block">
+        <div className="divide-y divide-zinc-200">
           {Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
@@ -28,7 +28,7 @@ export default function ProductListSkeleton() {
         {Array.from({ length: 5 }).map((_, index) => (
           <div
             key={index}
-            className="flex animate-pulse gap-4 rounded-xl border border-zinc-200 bg-white p-4"
+            className="flex animate-pulse gap-4 rounded-xl border border-zinc-300 bg-white p-4 shadow-xs"
           >
             <div className="h-20 w-20 shrink-0 rounded-lg bg-zinc-200" />
 

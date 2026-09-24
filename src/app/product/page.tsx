@@ -1,108 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AxiosError } from "axios";
-
-import { productService, Product } from "@/services/product.service";
-
 import ProductTable from "./components/ProductTable";
 import ProductMobileCard from "./components/ProductMobileCard";
 import ProductListSkeleton from "./components/ProductListSkeleton";
-import LogoutButton from "./components/LogoutButton";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import ProductPagination from "./components/ProductsPagination";
+import ProductFilters from "./components/ProductFilters";
+import LogoutButton from "./components/LogoutButton";
+import { useProducts } from "@/hooks/useProducts";
 
-const PAGE_SIZES = [10, 20, 50];
-
-function getValidPage(value: string | null) {
-  const page = Number(value);
-
-  if (!Number.isInteger(page) || page < 1) {
-    return 1;
-  }
-
-  return page;
-} 
-
-function getValidPageSize(value: string | null) {
-  const limit = Number(value);
-
-  if (!PAGE_SIZES.includes(limit)) {
-    return 20;
-  }
-
-  return limit;
-}
 
 export default function ProductsPage() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const [products, setProducts] = useState<Product[]>([]);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const currentPage = getValidPage(searchParams.get("page"));
-
-  const pageSize = getValidPageSize(searchParams.get("limit"));
-
-  const totalPages = Math.ceil(totalProducts / pageSize);
-
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      setError("");
-
-      const skip = (currentPage - 1) * pageSize;
-
-      const data = await productService.getProducts({
-        limit: pageSize,
-        skip,
-      });
-
-      setProducts(data.products);
-      setTotalProducts(data.total);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-
-      console.error("Failed to fetch products:", axiosError);
-
-      setError("Unable to load products. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [currentPage, pageSize]);
-
-  const updateUrl = (page: number, limit: number = pageSize) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    params.set("page", String(page));
-    params.set("limit", String(limit));
-
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages) {
-      return;
-    }
-
-    updateUrl(page);
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    if (!PAGE_SIZES.includes(newPageSize)) {
-      return;
-    }
-
-    updateUrl(1, newPageSize);
-  };
+  const {
+    products,
+    categories,
+    totalProducts,
+    totalPages,
+    currentPage,
+    pageSize,
+    selectedCategory,
+    searchQuery,
+    selectedSort,
+    selectedOrder,
+    isLoading,
+    error,
+    handlePageChange,
+    handlePageSizeChange,
+    handleCategoryChange,
+    handleSearchChange,
+    handleSortChange,
+    refetch,
+  } = useProducts();
 
   return (
     <main className="min-h-screen bg-zinc-50">
@@ -133,10 +60,21 @@ export default function ProductsPage() {
           )}
         </header>
 
+        <ProductFilters
+          categories={categories}
+          selectedCategory={selectedCategory}
+          searchQuery={searchQuery}
+          selectedSort={selectedSort}
+          selectedOrder={selectedOrder}
+          onCategoryChange={handleCategoryChange}
+          onSearchChange={handleSearchChange}
+          onSortChange={handleSortChange}
+        />
+
         {isLoading && <ProductListSkeleton />}
 
         {!isLoading && error && (
-          <div className="rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
+          <div className="rounded-xl border border-zinc-300 bg-white px-6 py-12 text-center shadow-xs">
             <div className="mx-auto max-w-sm">
               <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-600">
                 !
@@ -149,7 +87,7 @@ export default function ProductsPage() {
               <p className="mt-1 text-sm text-zinc-500">{error}</p>
 
               <button
-                onClick={fetchProducts}
+                onClick={refetch}
                 className="mt-5 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
               >
                 Retry
@@ -159,13 +97,15 @@ export default function ProductsPage() {
         )}
 
         {!isLoading && !error && products.length === 0 && (
-          <div className="rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
+          <div className="rounded-xl border border-zinc-300 bg-white px-6 py-12 text-center shadow-xs">
             <h2 className="text-sm font-semibold text-zinc-900">
               No products found
             </h2>
 
             <p className="mt-1 text-sm text-zinc-500">
-              There are no products to display.
+              {searchQuery
+                ? `No products matched "${searchQuery}". Try a different keyword.`
+                : "There are no products to display."}
             </p>
           </div>
         )}
