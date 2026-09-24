@@ -20,7 +20,6 @@ export default function ProductGallery({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Main image */}
       <div className="relative aspect-square overflow-hidden rounded-2xl border border-zinc-300 bg-white shadow-xs">
         <Image
           src={selectedImage}
@@ -32,7 +31,6 @@ export default function ProductGallery({
         />
       </div>
 
-      {/* Thumbnails */}
       <div className="flex gap-3 overflow-x-auto pb-1">
         {galleryImages.map((image, index) => {
           const isSelected = selectedImage === image;

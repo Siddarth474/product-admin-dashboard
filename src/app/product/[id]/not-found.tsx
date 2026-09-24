@@ -13,7 +13,7 @@ export default function ProductNotFound() {
         </h1>
 
         <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-zinc-500">
-          The product you're looking for doesn't exist or may have been removed.
+          The product you&apos;re looking for doesn&apos;t exist or may have been removed.
         </p>
 
         <Link

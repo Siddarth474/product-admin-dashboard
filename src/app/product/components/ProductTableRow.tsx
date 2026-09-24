@@ -2,9 +2,12 @@ import Image from "next/image";
 import { Product } from "@/services/product.service";
 import Link from "next/link";
 import { formatPriceInINR } from "@/utils/currencyConvertor";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface ProductTableRowProps {
   product: Product;
+  onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
 }
 
 function StockBadge({ stock }: { stock: number }) {
@@ -34,7 +37,11 @@ function StockBadge({ stock }: { stock: number }) {
   );
 }
 
-export default function ProductTableRow({ product }: ProductTableRowProps) {
+export default function ProductTableRow({
+  product,
+  onEdit,
+  onDelete,
+}: ProductTableRowProps) {
   return (
     <tr className="group transition-colors hover:bg-zinc-100/60">
       <td className="px-6 py-4">
@@ -82,6 +89,30 @@ export default function ProductTableRow({ product }: ProductTableRowProps) {
 
       <td className="px-6 py-4">
         <StockBadge stock={product.stock} />
+      </td>
+
+      <td className="px-6 py-4 text-right">
+        <div className="flex items-center justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => onEdit(product)}
+            title="Edit product"
+            aria-label={`Edit ${product.title}`}
+            className="rounded-lg border border-zinc-200 bg-white p-2 text-zinc-600 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900"
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onDelete(product)}
+            title="Delete product"
+            aria-label={`Delete ${product.title}`}
+            className="rounded-lg border border-zinc-200 bg-white p-2 text-red-600 shadow-2xs transition hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
       </td>
     </tr>
   );

@@ -27,7 +27,6 @@ export default function ProductFilters({
   return (
     <div className="mb-4 rounded-xl border border-zinc-300 bg-white p-4 shadow-xs">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        {/* Category */}
         <div className="w-full sm:max-w-xs lg:w-56 shrink-0">
           <label
             htmlFor="category"
@@ -52,7 +51,6 @@ export default function ProductFilters({
           </select>
         </div>
 
-        {/* Search */}
         <div className="w-full flex-1 lg:max-w-md">
           <ProductSearch
             value={searchQuery}
@@ -60,7 +58,6 @@ export default function ProductFilters({
           />
         </div>
 
-        {/* Sort */}
         <div className="grid w-full grid-cols-2 gap-3 sm:w-auto shrink-0">
           <div>
             <label

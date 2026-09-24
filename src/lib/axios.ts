@@ -24,7 +24,6 @@ api.interceptors.request.use(
   },
 );
 
-// Response interceptor for global error handling (e.g. logging 401/403)
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -36,6 +35,7 @@ api.interceptors.response.use(
         localStorage.removeItem("accessToken");
         document.cookie = "accessToken=; path=/; max-age=0";
         if (!window.location.pathname.startsWith("/login")) {
+
           window.location.href = "/login";
         }
       }

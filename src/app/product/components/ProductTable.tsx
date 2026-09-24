@@ -3,10 +3,14 @@ import ProductTableRow from "./ProductTableRow";
 
 interface ProductTableProps {
   products: Product[];
+  onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
 }
 
 export default function ProductTable({
   products,
+  onEdit,
+  onDelete,
 }: ProductTableProps) {
   return (
     <div className="hidden overflow-hidden rounded-xl border border-zinc-300 bg-white shadow-xs md:block">
@@ -33,6 +37,10 @@ export default function ProductTable({
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600">
                 Stock
               </th>
+
+              <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                Actions
+              </th>
             </tr>
           </thead>
 
@@ -41,6 +49,8 @@ export default function ProductTable({
               <ProductTableRow
                 key={product.id}
                 product={product}
+                onEdit={onEdit}
+                onDelete={onDelete}
               />
             ))}
           </tbody>

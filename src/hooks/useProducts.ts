@@ -83,43 +83,64 @@ export function useProducts() {
     fetchCategories();
   }, []);
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError("");
+  const [refreshIndex, setRefreshIndex] = useState(0);
+  const refetch = useCallback(() => {
+    setRefreshIndex((prev) => prev + 1);
+  }, []);
 
-      const skip = (currentPage - 1) * pageSize;
-      const params = {
-        limit: pageSize,
-        skip,
-        ...(selectedSort && {
-          sortBy: selectedSort as "price" | "rating" | "title",
-          order: selectedOrder,
-        }),
-      };
+  useEffect(() => {
+    let ignore = false;
 
-      let data;
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
 
-      if (searchQuery.trim()) {
-        data = await productService.searchProducts(searchQuery.trim(), params);
-      } else if (selectedCategory) {
-        data = await productService.getProductsByCategory(
-          selectedCategory,
-          params,
-        );
-      } else {
-        data = await productService.getProducts(params);
+        const skip = (currentPage - 1) * pageSize;
+        const params = {
+          limit: pageSize,
+          skip,
+          ...(selectedSort && {
+            sortBy: selectedSort as "price" | "rating" | "title",
+            order: selectedOrder,
+          }),
+        };
+
+        let data;
+
+        if (searchQuery.trim()) {
+          data = await productService.searchProducts(searchQuery.trim(), params);
+        } else if (selectedCategory) {
+          data = await productService.getProductsByCategory(
+            selectedCategory,
+            params,
+          );
+        } else {
+          data = await productService.getProducts(params);
+        }
+
+        if (!ignore) {
+          setProducts(data.products);
+          setTotalProducts(data.total);
+        }
+      } catch (err) {
+        if (!ignore) {
+          const axiosError = err as AxiosError;
+          console.error("Failed to fetch products:", axiosError);
+          setError("Unable to load products. Please try again.");
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
       }
+    };
 
-      setProducts(data.products);
-      setTotalProducts(data.total);
-    } catch (err) {
-      const axiosError = err as AxiosError;
-      console.error("Failed to fetch products:", axiosError);
-      setError("Unable to load products. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    loadProducts();
+
+    return () => {
+      ignore = true;
+    };
   }, [
     currentPage,
     pageSize,
@@ -127,11 +148,8 @@ export function useProducts() {
     searchQuery,
     selectedSort,
     selectedOrder,
+    refreshIndex,
   ]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   useEffect(() => {
     if (totalProducts > 0 && currentPage > totalPages) {
@@ -170,6 +188,84 @@ export function useProducts() {
     });
   };
 
+  const DEFAULT_THUMBNAIL =
+    "https://cdn.dummyjson.com/products/images/groceries/Apple/thumbnail.png";
+
+  const addProduct = async (
+    newProductData: Partial<Product>,
+  ): Promise<Product> => {
+    let apiResponse: Partial<Product> = {};
+    try {
+      apiResponse = await productService.addProduct(newProductData);
+    } catch (err) {
+      console.warn("DummyJSON addProduct fallback to local state:", err);
+    }
+
+    const finalProduct: Product = {
+      id: apiResponse.id || Date.now(),
+      title: apiResponse.title || newProductData.title || "Untitled Product",
+      description:
+        apiResponse.description || newProductData.description || "",
+      category:
+        apiResponse.category || newProductData.category || "general",
+      price: Number(apiResponse.price ?? newProductData.price ?? 0),
+      rating: Number(apiResponse.rating ?? newProductData.rating ?? 4.5),
+      stock: Number(apiResponse.stock ?? newProductData.stock ?? 0),
+      thumbnail:
+        apiResponse.thumbnail ||
+        newProductData.thumbnail ||
+        DEFAULT_THUMBNAIL,
+      images: apiResponse.images?.length
+        ? apiResponse.images
+        : [
+            apiResponse.thumbnail ||
+              newProductData.thumbnail ||
+              DEFAULT_THUMBNAIL,
+          ],
+      reviews: apiResponse.reviews || [],
+    };
+
+    setProducts((prev) => [finalProduct, ...prev]);
+    setTotalProducts((prev) => prev + 1);
+    return finalProduct;
+  };
+
+  const editProduct = async (
+    id: number,
+    updatedData: Partial<Product>,
+  ): Promise<void> => {
+    let apiUpdated: Partial<Product> = {};
+    try {
+      apiUpdated = await productService.updateProduct(id, updatedData);
+    } catch (apiErr) {
+      console.warn("DummyJSON updateProduct fallback to local state:", apiErr);
+    }
+
+    setProducts((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            ...updatedData,
+            ...apiUpdated,
+          };
+        }
+        return item;
+      }),
+    );
+  };
+
+  const deleteProduct = async (id: number): Promise<void> => {
+    try {
+      await productService.deleteProduct(id);
+    } catch (apiErr) {
+      console.warn("DummyJSON deleteProduct fallback to local state:", apiErr);
+    }
+
+    setProducts((prev) => prev.filter((item) => item.id !== id));
+    setTotalProducts((prev) => Math.max(0, prev - 1));
+  };
+
   return {
     products,
     categories,
@@ -189,6 +285,9 @@ export function useProducts() {
     handleCategoryChange,
     handleSearchChange,
     handleSortChange,
-    refetch: fetchProducts,
+    addProduct,
+    editProduct,
+    deleteProduct,
+    refetch,
   };
 }

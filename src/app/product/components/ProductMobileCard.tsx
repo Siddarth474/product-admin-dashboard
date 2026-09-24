@@ -2,9 +2,12 @@ import Image from "next/image";
 import { Product } from "@/services/product.service";
 import Link from "next/link";
 import { formatPriceInINR } from "@/utils/currencyConvertor";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface ProductMobileCardProps {
   product: Product;
+  onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
 }
 
 function StockBadge({ stock }: { stock: number }) {
@@ -27,7 +30,11 @@ function StockBadge({ stock }: { stock: number }) {
   );
 }
 
-export default function ProductMobileCard({ product }: ProductMobileCardProps) {
+export default function ProductMobileCard({
+  product,
+  onEdit,
+  onDelete,
+}: ProductMobileCardProps) {
   return (
     <article className="rounded-xl border border-zinc-300 bg-white p-4 shadow-xs">
       <div className="flex gap-4">
@@ -59,13 +66,37 @@ export default function ProductMobileCard({ product }: ProductMobileCardProps) {
             {product.category}
           </p>
 
-          <div className="mt-3 flex items-center gap-3">
-            <span className="text-xs text-zinc-600">
-              <span className="text-yellow-500">★</span>{" "}
-              {product.rating.toFixed(1)}
-            </span>
+          <div className="mt-3 flex items-center justify-between gap-2 border-t border-zinc-100 pt-2.5">
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-zinc-600">
+                <span className="text-yellow-500">★</span>{" "}
+                {product.rating.toFixed(1)}
+              </span>
 
-            <StockBadge stock={product.stock} />
+              <StockBadge stock={product.stock} />
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => onEdit(product)}
+                title="Edit product"
+                aria-label={`Edit ${product.title}`}
+                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-zinc-600 shadow-2xs transition hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-900"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onDelete(product)}
+                title="Delete product"
+                aria-label={`Delete ${product.title}`}
+                className="rounded-lg border border-zinc-200 bg-white p-1.5 text-red-600 shadow-2xs transition hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

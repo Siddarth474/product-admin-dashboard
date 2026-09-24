@@ -89,4 +89,24 @@ export const productService = {
 
     return response.data;
   },
+
+  async addProduct(product: Partial<Product>): Promise<Product> {
+    const response = await api.post<Product>("/products/add", product);
+
+    return response.data;
+  },
+
+  async updateProduct(id: number, product: Partial<Product>): Promise<Product> {
+    const response = await api.put<Product>(`/products/${id}`, product);
+
+    return response.data;
+  },
+
+  async deleteProduct(id: number): Promise<Product & { isDeleted?: boolean }> {
+    const response = await api.delete<Product & { isDeleted?: boolean }>(
+      `/products/${id}`,
+    );
+
+    return response.data;
+  },
 };

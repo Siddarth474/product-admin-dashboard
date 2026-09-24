@@ -1,7 +1,6 @@
 export default function ProductListSkeleton() {
   return (
     <>
-      {/* Desktop */}
       <div className="hidden overflow-hidden rounded-xl border border-zinc-300 bg-white shadow-xs md:block">
         <div className="divide-y divide-zinc-200">
           {Array.from({ length: 8 }).map((_, index) => (
@@ -23,7 +22,6 @@ export default function ProductListSkeleton() {
         </div>
       </div>
 
-      {/* Mobile */}
       <div className="space-y-3 md:hidden">
         {Array.from({ length: 5 }).map((_, index) => (
           <div

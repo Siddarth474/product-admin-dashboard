@@ -15,13 +15,13 @@ export default function ProductSearch({
   placeholder = "Search products by name...",
 }: ProductSearchProps) {
   const [searchTerm, setSearchTerm] = useState(value);
+  const [prevValue, setPrevValue] = useState(value);
 
-  // Sync internal state if external value changes (e.g. cleared via category select or URL change)
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     setSearchTerm(value);
-  }, [value]);
+  }
 
-  // Debounce: Wait until user stops typing (400ms) before triggering onChange
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== value) {
