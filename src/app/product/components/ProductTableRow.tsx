@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Product } from "@/services/product.service";
-import Link from "next/link";
 import { formatPriceInINR } from "@/utils/currencyConvertor";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -42,8 +44,17 @@ export default function ProductTableRow({
   onEdit,
   onDelete,
 }: ProductTableRowProps) {
+  const router = useRouter();
+
+  const handleRowClick = () => {
+    router.push(`/product/${product.id}`);
+  };
+
   return (
-    <tr className="group transition-colors hover:bg-zinc-100/60">
+    <tr
+      onClick={handleRowClick}
+      className="group cursor-pointer transition-colors hover:bg-zinc-100/70"
+    >
       <td className="px-6 py-4">
         <div className="flex items-center gap-4">
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-300 bg-zinc-100">
@@ -56,12 +67,9 @@ export default function ProductTableRow({
             />
           </div>
 
-          <Link
-            href={`/product/${product.id}`}
-            className="truncate font-medium text-zinc-900 transition hover:text-zinc-500"
-          >
+          <span className="truncate font-medium text-zinc-900 transition group-hover:text-zinc-600">
             {product.title}
-          </Link>
+          </span>
         </div>
       </td>
 
@@ -92,7 +100,10 @@ export default function ProductTableRow({
       </td>
 
       <td className="px-6 py-4 text-right">
-        <div className="flex items-center justify-end gap-2">
+        <div
+          className="flex items-center justify-end gap-2"
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
             type="button"
             onClick={() => onEdit(product)}
